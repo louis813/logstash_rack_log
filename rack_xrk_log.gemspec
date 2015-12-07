@@ -5,7 +5,7 @@ require 'rack/xrk/log'
 
 Gem::Specification.new do |spec|
   spec.name          = "rack_xrk_log"
-  spec.version       = Rack::Xrk::LOG::VERSION
+  spec.version       = Rack::Xrk::Log::VERSION
   spec.authors       = ["Louis Liu"]
   spec.email         = ["louisliu813@gmail.com"]
   spec.description   = "Gem for overwriting outputting JSON formatted access logs from Rack apps"
