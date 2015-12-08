@@ -14,5 +14,5 @@ gem 'rack_xrk_log',  :git => 'git@github.com:louis813/rack_xrk_log.git'
 
 ~~~
 require 'rack/xrk/log'
-use Rack::Xrk::Log::CommonJsonLogger, Rails.logger
+use Rack::Xrk::Log::CommonLogger, Rails.logger
 ~~~
