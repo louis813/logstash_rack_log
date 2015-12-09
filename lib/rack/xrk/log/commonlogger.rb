@@ -7,7 +7,6 @@ module Rack
       class CommonLogger < Rack::CommonLogger
 
         def initialize(app, logger=nil)
-          binding.pry
           logger = ::Logger.new(::File.new("log/#{app.class.parent_name.downcase}_quality_access.log","a+"))
           logger.formatter = proc do |severity, datetime, progname, msg|
              "#{msg}\n"
