@@ -2,10 +2,10 @@ module Rack
   module XrkLog
     class Base
       attr_accessor :app, :logger, :app_name, :begin_at, :log_type
-      
+
       def initialize(app)
         @app = app
-        @log_type = "ACESS"
+        @log_type = "ACCESS"
         @logger = ::Logger.new("log/#{app.class.parent_name.downcase}_quality_access.log")
         @logger.formatter = proc do |severity, datetime, progname, msg|
           "#{begin_at}|#{app_name}|#{log_type}|#{msg}\n"
@@ -28,7 +28,7 @@ module Rack
         body = formatter(env, body, status, header)
         @logger.info(body) unless body.nil?
       end
-      
+
     end
   end
 end

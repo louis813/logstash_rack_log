@@ -14,10 +14,13 @@ module Rack
 
         return if [%r{^/assets/}, %r{favicon.ico}].any?{|path| path.match(@request.path) }
 
-        query_string = @request.query_string.blank? ? "-" : @request.query_string
+        client_ip_and_port    = "#{@request.host}:#{@request.port}"
+        server_ip_and_port    = "#{env['SERVER_NAME']}:#{env['SERVER_PORT']}"
+        query_string          = @request.query_string.blank? ? "-" : @request.query_string
+
         [
-          @request.ip,
-          @request.host_with_port,
+          client_ip_and_port,
+          server_ip_and_port,
           total_runtime,
           @request.scheme,
           @request.content_length || 0,
@@ -27,9 +30,11 @@ module Rack
           status,
           query_string,
           path_parameters(env),
+          "-",
           json_with_nil(body[0]) || "-"
         ].join("|")
       end
+
 
       def json_with_nil(value)
         JSON.parse(value) rescue nil
