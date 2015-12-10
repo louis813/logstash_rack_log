@@ -7,12 +7,12 @@ rack log for logstash
 1. 增加 Gem
 
 ~~~
-gem 'rack_xrk_log',  :git => 'git@github.com:louis813/rack_xrk_log.git'
+gem 'rack_xrk_log'
 ~~~
 
 2. 在 config.ru 增加
 
 ~~~
 require 'rack/xrk/log'
-use Rack::Xrk::Log::CommonLogger, Rails.logger
+use Rack::XrkLog::CommonLogger
 ~~~
