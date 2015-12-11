@@ -37,7 +37,7 @@ module Rack
 
 
       def json_with_nil(value)
-        JSON.parse(value) rescue nil
+        JSON.parse(value).to_json rescue nil
       end
 
 
