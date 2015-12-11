@@ -13,7 +13,7 @@ module Rack
       def call(env)
         @dispose.begin_at = DateTime.now.strftime("%Q").to_i
         status, header, body = @app.call(env)
-        @dispose.write(env, body, status, header)
+        @dispose.write(env, body, status, header) rescue nil
         [status, header, body]
       end
 
