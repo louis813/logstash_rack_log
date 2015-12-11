@@ -17,7 +17,7 @@ module Rack
       end
 
       def total_runtime
-        (stop_at - begin_at).round(2)
+        (stop_at - begin_at)
       end
 
       def stop_at
