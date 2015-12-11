@@ -12,19 +12,21 @@ module Rack
       def formatter(env, body, status, header)
         @request = Rack::Request.new(env)
 
-        return if [%r{^/assets/}, %r{favicon.ico}].any?{|path| path.match(@request.path) }
+        return if [%r{^/assets/}, %r{favicon.ico}, %r{404}].any?{|path| path.match(@request.path) }
 
-        client_ip_and_port    = "#{@request.host}:#{@request.port}"
+        client_ip_and_port    = "#{@request.ip}:#{@request.port}"
         server_ip_and_port    = "#{env['SERVER_NAME']}:#{env['SERVER_PORT']}"
         query_string          = @request.query_string.blank? ? "-" : @request.query_string
+
+        binding.pry
 
         [
           client_ip_and_port,
           server_ip_and_port,
           total_runtime,
           @request.scheme,
-          @request.content_length || 0,
-          @request.body.size || 0,
+          query_string.bytesize || 0,
+          body.bytesize() || 0,
           @request.request_method,
           @request.path_info,
           status,
