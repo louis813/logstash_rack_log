@@ -18,28 +18,25 @@ module Rack
         server_ip_and_port    = "#{env['SERVER_NAME']}:#{env['SERVER_PORT']}"
         query_string          = @request.query_string.blank? ? "-" : @request.query_string
 
-        binding.pry
-
         [
           client_ip_and_port,
           server_ip_and_port,
           total_runtime,
           @request.scheme,
-          query_string.bytesize || 0,
-          body.bytesize() || 0,
+          (query_string.bytesize rescue nil) || 0,
+          (body[0].bytesize() rescue nil) || 0,
           @request.request_method,
           @request.path_info,
           status,
           query_string,
           path_parameters(env),
           "-",
-          json_with_nil(body[0]) || "-"
+          (json_with_nil(body[0]) rescue nil) || "-"
         ].join("|")
       end
 
-
       def json_with_nil(value)
-        JSON.parse(value).to_json rescue nil
+        JSON.parse(value).to_json
       end
 
 
