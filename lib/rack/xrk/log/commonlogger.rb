@@ -5,13 +5,13 @@ module Rack
   module XrkLog
     class CommonLogger
 
-      def initialize(app)
-        @app = app
-        @dispose = Dispose.new(@app)
+      def initialize(app, app_name)
+        @app     = app
+        @dispose = Dispose.new(@app, app_name)
       end
 
       def call(env)
-        @dispose.begin_at = DateTime.now.strftime("%Q").to_i
+        @dispose.begin_at    = DateTime.now.strftime("%Q").to_i
         status, header, body = @app.call(env)
         @dispose.write(env, body, status, header) rescue nil
         [status, header, body]

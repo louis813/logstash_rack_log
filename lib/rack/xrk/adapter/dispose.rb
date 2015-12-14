@@ -4,8 +4,8 @@ module Rack
   module XrkLog
     class Dispose < Base
 
-      def initialize(app)
-        @app_name = app.class.parent_name
+      def initialize(app, app_name)
+        @app_name = app_name
         super
       end
 
@@ -38,7 +38,6 @@ module Rack
       def json_with_nil(value)
         JSON.parse(value).to_json
       end
-
 
       def path_parameters(env)
         opts = env["action_dispatch.request.path_parameters"]
