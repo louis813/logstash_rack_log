@@ -16,7 +16,7 @@ module Rack
 
         client_ip_and_port    = "#{@request.ip}:#{@request.port}"
         server_ip_and_port    = "#{env['SERVER_NAME']}:#{env['SERVER_PORT']}"
-        query_string          = @request.query_string.blank? ? "-" : @request.query_string
+        query_string          = @request.query_string.blank? ? "" : @request.query_string
 
         [
           client_ip_and_port,

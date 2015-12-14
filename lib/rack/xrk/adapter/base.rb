@@ -4,11 +4,7 @@ module Rack
       attr_accessor :app, :logger, :app_name, :begin_at, :log_type
 
       def initialize(app)
-        if app.class.parent_name.present?
-          app_name = app.class.parent_name.downcase
-        else
-          app_name = app.class.name.downcase
-        end
+        app_name = @@app_name
         @app = app
         @log_type = "ACCESS"
         @logger = ::Logger.new("log/#{app_name}_quality_access.log")
