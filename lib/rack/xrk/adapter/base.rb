@@ -4,7 +4,7 @@ module Rack
       attr_accessor :app, :logger, :app_name, :begin_at, :log_type
 
       def initialize(app, app_name)
-        app_name  = app_name
+        @app_name  = app_name || "unknown"
         @app      = app
         @log_type = "ACCESS"
         @logger   = ::Logger.new("log/#{app_name}_quality_access.log")
@@ -25,9 +25,21 @@ module Rack
         DateTime.now.strftime("%Q").to_i
       end
 
-      def write(env, body, status, header)
-        body = formatter(env, body, status, header)
-        @logger.info(body) unless body.nil?
+      def paths_filter?(path)
+        prefix = @app.try(:config).try(:assets).try(:prefix)
+        paths = [%r[\A/{0,2}favicon.ico]]
+        paths << "%r[\A/{0,2}#{prefix}]" if prefix
+
+        path =~ /\A(#{paths.join('|')})/ ? false : true
+      end
+
+      def write(request, response)
+        begin
+          body = formatter(request, response)
+          @logger.info(body) unless body.nil?  
+        rescue Exception => e
+          
+        end
       end
 
     end
