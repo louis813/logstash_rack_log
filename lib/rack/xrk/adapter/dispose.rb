@@ -20,26 +20,24 @@ module Rack
           request.request_method,
           request.path_info,
           response.status,
-          request.query_string,
-          path_parameters(request),
+          convert_clipped(request.query_string),
+          convert_clipped(path_parameters(request)),
           "-",
-          json_with_nil(response.body)
+          convert_clipped(convert_json(response.body))
         ].join("|") if paths_filter?(request.path)
       end
 
-      def json_with_nil(body)
+      def convert_json(body)
         if body
           val = body.is_a?(Array) ? body[0] : body
-          JSON.parse(val).to_json rescue "-"
-        else
-          "-"
+          JSON.parse(val).to_json rescue nil
         end
       end
 
 
       def path_parameters(request)
         opts = request.env["action_dispatch.request.path_parameters"]
-        return "#{opts[:controller]}/#{opts[:action]}" unless opts.blank?
+        return "#{opts[:controller]}/#{opts[:action]}" unless !opts || opts.empty?
       end
 
     end
