@@ -4,44 +4,40 @@ module Rack
   module XrkLog
     class Dispose < Base
 
-      def initialize(app, app_name)
-        @app_name = app_name
+      def initialize(app, app_name, options = {})
+        @log_type = "ACCESS"
         super
       end
 
-      def formatter(env, body, status, header)
-        @request = Rack::Request.new(env)
-
-        return if [%r{^/assets/}, %r{favicon.ico}, %r{404}].any?{|path| path.match(@request.path) }
-
-        client_ip_and_port    = "#{@request.ip}:0"
-        server_ip_and_port    = "#{env['SERVER_NAME']}:#{env['SERVER_PORT']}"
-        query_string          = @request.query_string.blank? ? "" : @request.query_string
-
+      def formatter(request, response)
         [
-          client_ip_and_port,
-          server_ip_and_port,
+          "#{request.ip}:0",
+          current_ip_with_port,
           total_runtime,
-          @request.scheme,
-          (query_string.bytesize rescue nil) || 0,
-          (body[0].bytesize() rescue nil) || 0,
-          @request.request_method,
-          @request.path_info,
-          status,
-          query_string,
-          path_parameters(env),
-          "-",
-          (json_with_nil(body[0]) rescue nil) || "-"
-        ].join("|")
+          request.scheme,
+          (request.content_length || 0),
+          (response.content_length || 0),
+          request.request_method,
+          request.path_info,
+          response.status,
+          convert_clipped(request.query_string),
+          convert_clipped(path_parameters(request)),
+          convert_clipped,
+          convert_clipped(convert_json(response.body))
+        ].join("|") if paths_filter?(request.path)
       end
 
-      def json_with_nil(value)
-        JSON.parse(value).to_json
+      def convert_json(body)
+        if body
+          val = body.is_a?(Array) ? body[0] : body
+          JSON.parse(val).to_json rescue nil
+        end
       end
 
-      def path_parameters(env)
-        opts = env["action_dispatch.request.path_parameters"]
-        return "#{opts[:controller]}/#{opts[:action]}" unless opts.blank?
+
+      def path_parameters(request)
+        opts = request.env["action_dispatch.request.path_parameters"]
+        return "#{opts[:controller]}/#{opts[:action]}" unless !opts || opts.empty?
       end
 
     end

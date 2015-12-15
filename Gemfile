@@ -4,6 +4,8 @@ gemspec
 
 gem 'rake'
 
-group :test do
+
+group :test, :development do
   gem 'pry'
+  gem 'rspec'
 end
