@@ -27,7 +27,7 @@ module Rack
 
       def paths_filter?(path)
         prefix = @app.try(:config).try(:assets).try(:prefix)
-        paths = [%r[\Afavicon.ico]]
+        paths = [%r[favicon.ico]]
         paths << "%r[\A/{0,2}#{prefix}]" if prefix
 
         path =~ /\A(#{paths.join('|')})/ ? false : true
