@@ -1,4 +1,5 @@
 require 'socket'
+require 'logger'
 
 module Rack
   module XrkLog
@@ -60,7 +61,7 @@ module Rack
         @app.try(:config).try(:assets).try(:prefix) if defined?(Rails)
       end
 
-      def convert_clipped(value)
+      def convert_clipped(value = nil)
         value || "-"
       end
 

@@ -22,7 +22,7 @@ module Rack
           response.status,
           convert_clipped(request.query_string),
           convert_clipped(path_parameters(request)),
-          "-",
+          convert_clipped,
           convert_clipped(convert_json(response.body))
         ].join("|") if paths_filter?(request.path)
       end
