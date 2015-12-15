@@ -4,15 +4,15 @@ module Rack
   module XrkLog
     class Dispose < Base
 
-      def initialize(app, app_name)
-        @app_name = app_name
+      def initialize(app, app_name, options = {})
+        @log_type = "ACCESS"
         super
       end
 
       def formatter(request, response)
         [
           "#{request.ip}:0",
-          request.host_with_port,
+          current_ip_with_port,
           total_runtime,
           request.scheme,
           (request.content_length || 0),
@@ -28,8 +28,12 @@ module Rack
       end
 
       def json_with_nil(body)
-        return "-" unless body
-        JSON.parse(val).to_json rescue "-"
+        if body
+          val = body.is_a?(Array) ? body[0] : body
+          JSON.parse(val).to_json rescue "-"
+        else
+          "-"
+        end
       end
 
 

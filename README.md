@@ -14,5 +14,12 @@ gem 'rack_xrk_log'
 
 ~~~
 require 'rack/xrk/log'
-use Rack::XrkLog::CommonLogger
+use Rack::XrkLog::CommonLogger, app_name, options
 ~~~
+
+app_name：程序名称
+
+options：配置参数可以选
+
+1.  exclude_path 过滤路径
+2.  port 端口
