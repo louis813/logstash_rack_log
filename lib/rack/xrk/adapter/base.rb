@@ -58,7 +58,16 @@ module Rack
       end
 
       def rails_assets_prefix
-        @app.try(:config).try(:assets).try(:prefix) if defined?(Rails)
+        try_prefix(@app) if defined?(Rails)
+      end
+
+      def try_prefix(obj, method = nil)
+        paths = [:config, :assets, :prefix]
+        method = paths[0] unless method
+        if obj.respond_to?(method)
+          i = paths.index(method)
+          i >= paths.length - 1 ? obj.send(method) : try_prefix(obj, paths[i+1])
+        end
       end
 
       def convert_clipped(value = nil)
