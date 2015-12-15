@@ -44,8 +44,6 @@ module Rack
         paths = Array(_paths)
         prefix = rails_assets_prefix
         paths << prefix if prefix
-        prefix = sinatra_assets_prefix
-        paths << prefix if prefix
         @options[:exclude_path] += paths
       end
 
@@ -60,10 +58,6 @@ module Rack
 
       def rails_assets_prefix
         @app.try(:config).try(:assets).try(:prefix) if defined?(Rails)
-      end
-
-      def sinatra_assets_prefix
-        app.settings.assets_prefix if defined?(Sinatra::Application)
       end
 
       def convert_clipped(value)
