@@ -64,4 +64,14 @@ describe Rack::XrkLog::Dispose do
     @dispose.write(request, Mock::Response.new)
     expect(IO.readlines(@logger_file).count).to eq(old_count)
   end
+
+
+  it "try_prefix deep call method" do 
+    expect(@dispose.try_prefix(Mock::TestA.new)).to eq("test")
+  end
+
+  it "try_prefix not call method" do 
+    Mock::TestA.send(:remove_method, :assets)
+    expect(@dispose.try_prefix(Mock::TestA.new)).to be_nil
+  end
 end

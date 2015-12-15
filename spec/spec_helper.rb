@@ -41,4 +41,15 @@ module Mock
       @body = "{\"name\":\"zhangsan\",\"age\":19}"
     end
   end
+
+  class TestA
+
+    def config; self end
+
+    def assets; self end
+
+    def prefix
+      "test"
+    end
+  end
 end
