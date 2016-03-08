@@ -1,4 +1,4 @@
-# rack_xrk_log
+# logstash_rack_log
 rack log for logstash
 
 目前只适合公司的ruby项目使用
@@ -7,7 +7,7 @@ rack log for logstash
 1.  增加 Gem
 
   ~~~
-  gem 'rack_xrk_log'
+  gem 'logstash_rack_log'
   ~~~
 
 2.  在 config.ru 增加
