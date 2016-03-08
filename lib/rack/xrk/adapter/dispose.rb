@@ -22,7 +22,7 @@ module Rack
           response.status,
           convert_clipped(request.query_string),
           convert_clipped(path_parameters(request)),
-          convert_clipped,
+          convert_clipped(header_code(response.header) || body_code(response.body)),
           convert_clipped(convert_json(response.body))
         ].join("|") if paths_filter?(request.path)
       end
@@ -34,6 +34,13 @@ module Rack
         end
       end
 
+      def header_code(header)
+        header["XRK_LOG_BUSINESS_CODE"] rescue nil
+      end
+
+      def body_code(body)
+        body["code"] rescue nil
+      end
 
       def path_parameters(request)
         opts = request.env["action_dispatch.request.path_parameters"]
